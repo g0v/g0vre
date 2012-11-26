@@ -4,12 +4,13 @@
   "scripts": {
     "start": "node server.js"
   },
-  "version": "0.0.1",
+  "version": "0.0.1-1",
   "engines": {
     "node": "0.8.x"
   },
   "analyze": false,
   "dependencies": {
-    "readabilitySAX": "1.5.3"
+    "readabilitySAX": "1.5.3",
+    "cheerio": "0.10.3",
   }
 }

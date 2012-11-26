@@ -4,7 +4,7 @@ port = process.env.PORT || 19000;
 
 read-the-url = (url, res) ->
   extractor.extract url, ->
-    res.write( JSON.stringify({title: it.title, text: it.text }), "utf8" )
+    res.write( JSON.stringify(it), "utf8" )
     res.end!
 
 http.createServer !(req, res) ->
