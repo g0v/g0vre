@@ -11,6 +11,6 @@
   "analyze": false,
   "dependencies": {
     "readabilitySAX": "1.5.3",
-    "cheerio": "0.10.3",
+    "cheerio": "0.10.3"
   }
 }
