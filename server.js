@@ -6,10 +6,7 @@
   port = process.env.PORT || 19000;
   readTheUrl = function(url, res){
     return extractor.extract(url, function(it){
-      res.write(JSON.stringify({
-        title: it.title,
-        text: it.text
-      }), "utf8");
+      res.write(JSON.stringify(it), "utf8");
       return res.end();
     });
   };
