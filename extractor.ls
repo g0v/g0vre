@@ -1,31 +1,39 @@
 require! <[ request readabilitySAX cheerio ]>
+Url = require \url
 Parser = require 'htmlparser2/lib/Parser.js'
 
 trim = -> it.replace(/&nbsp;/g," ").replace(/^\s+/, "").replace(/\s+$/,"")
 
 extract = !(url, cb) ->
-
   _err, _res, page <- request url
-  reader = new readabilitySAX.Readability pageURL: url
-  parser = new Parser reader, { lowerCaseTags: true }
   article = null
-  skipLevel = 0
+  reader = new readabilitySAX.Readability pageURL: url, resolvePaths: true
+  parser = new Parser reader, { lowerCaseTags: true }
+  skipLevel = 2
 
   do
     reader.setSkipLevel skipLevel if skipLevel != 0
-    parser.parseComplete(page);
+    parser.parseComplete page
     article = reader.getArticle!
     skipLevel += 1
-  while article.textLength < 250 and skipLevel < 4
-
-  delete article.score
-  delete article.textLength
-  delete article.nextPage
-
+  while article.textLength < 250 and skipLevel < 6
 
   article.text = trim reader.getText!
-  $ = cheerio.load page
-  article.links = $("a").map -> { url: (@attr \href), text: @text! }
+  delete article<[ score textLength nextPage ]>
+
+  take_links  = ($) -> $("a[href]") .map -> { url: Url.resolve(url, @attr \href), text: @text! }
+  take_images = ($) -> $("img[src]").map -> { url: Url.resolve(url, @attr \src),  alt: (@attr \alt) }
+
+  $ = cheerio.load article.html
+  article.links = take_links $
+  article.images = take_images $
+
+  $ = cheerio.load article.full_html  = page.replace /^\s*/, ""
+  $("script,style").remove!
+  article.full_links  = take_links $
+  article.full_images = take_images $
+  article.full_text_untrimed = $("html").text!
+  article.full_text   = trim article.full_text_untrimed.replace(/[ \t\n\r]+/g, " ")
   cb(article)
 
 export extract: extract
