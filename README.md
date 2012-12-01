@@ -10,3 +10,25 @@ Params:
 
 - url
 - pretty=1
+
+The is a hash with these keys:
+
+- title
+- text
+- html
+- links
+- images
+- full_text
+- full_text_untrimed
+- full_html
+- full_links
+- full_images
+
+The `full_*` part are un-extracted results from the whole page html. While others are processed
+with `readibilitySAX` npm to produce content part in the page.
+
+`full_text` is trimed by default since generally web pagse contains a lot of whitespaces.
+`full_text_untrimed` keeps those whitespace just in case.
+
+`links` and `images` are array of hashes with `url`, `text` or `alt` keys.
+
