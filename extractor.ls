@@ -4,7 +4,7 @@ Parser = require 'htmlparser2/lib/Parser.js'
 
 trim = -> it.replace(/&nbsp;/g," ").replace(/^\s+/, "").replace(/\s+$/,"")
 
-extract = !(url, cb) ->
+extract = !(url, opts, cb) ->
   _err, _res, page <- request url
   article = null
   reader = new readabilitySAX.Readability pageURL: url, resolvePaths: true
@@ -28,12 +28,13 @@ extract = !(url, cb) ->
   article.links = take_links $
   article.images = take_images $
 
-  $ = cheerio.load article.full_html  = page.replace /^\s*/, ""
-  $("script,style").remove!
-  article.full_links  = take_links $
-  article.full_images = take_images $
-  article.full_text_untrimed = $("html").text!
-  article.full_text   = trim article.full_text_untrimed.replace(/[ \t\n\r]+/g, " ")
+  if opts.full
+    $ = cheerio.load article.full_html  = page.replace /^\s*/, ""
+    $("script,style").remove!
+    article.full_links  = take_links $
+    article.full_images = take_images $
+    article.full_text_untrimed = $("html").text!
+    article.full_text   = trim article.full_text_untrimed.replace(/[ \t\n\r]+/g, " ")
   cb(article)
 
 export extract: extract

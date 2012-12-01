@@ -8,8 +8,9 @@ Usage:
 
 Params:
 
-- url
+- url *required*
 - pretty=1
+- full=1
 
 The is a hash with these keys:
 
@@ -18,17 +19,21 @@ The is a hash with these keys:
 - html
 - links
 - images
+
+These values are extracted with `readabilitySAX` and contains only the content part of the page.
+`links` and `images` are array of hashes with `url`, `text` or `alt` keys.
+
+The following extra key-values would be included only if `full=1` is in the URL querystring:
+
 - full_text
 - full_text_untrimed
 - full_html
 - full_links
 - full_images
 
-The `full_*` part are un-extracted results from the whole page html. While others are processed
-with `readibilitySAX` npm to produce content part in the page.
+The `full_*` part are un-extracted results from the whole page html.
 
 `full_text` is trimed by default since generally web pagse contains a lot of whitespaces.
 `full_text_untrimed` keeps those whitespace just in case.
 
-`links` and `images` are array of hashes with `url`, `text` or `alt` keys.
 
