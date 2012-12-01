@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node server.js"
   },
-  "version": "0.0.3",
+  "version": "0.0.4-1",
   "engines": {
     "node": "0.8.x"
   },
@@ -12,6 +12,7 @@
   "dependencies": {
     "readabilitySAX": "1.5.3",
     "cheerio": "0.10.3",
-    "request": "2.12.x"
+    "request": "2.12.x",
+    "htmlparser2": "*"
   }
 }
