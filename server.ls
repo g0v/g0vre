@@ -1,19 +1,37 @@
-require! <[ ./extractor http url ]>
+require! <[ ./extractor http request url cheerio ]>
 
-port = process.env.PORT || 19000;
+Iconv = require \iconv .Iconv
 
-read-the-url = (url, res, opts) ->
+write-json-response = (res, obj, opts) ->
+  res.write JSON.stringify obj, \utf8, (opts.pretty and 4 or 0)
+  res.end!                   
+
+read-the-url = (url, opts, respond) ->
   extractor.extract url, opts, ->
-    res.write JSON.stringify it, \utf8, (opts.pretty and 4 or 0)
-    res.end!
+    respond it
+
+get-aec-radiations = (respond) ->
+  _err, _res, page <- request { url: 'http://www.trmc.aec.gov.tw/utf8/showmap/taiwan_out.php', encoding: null }
+  radiations = []
+  $ = cheerio.load (new Iconv 'Big5', 'UTF-8').convert(page)
+  $("a").each ->
+    radiations.push {
+      location: @text!.replace /\s/g, ""
+      value: @parent!.parent!.next!.text!
+    }
+  respond radiations
 
 http.createServer !(req, res) ->
   link = url.parse req.url, true
   if link.pathname == \/read and link.query.url
-    read-the-url link.query.url, res, link.query
+    data <- read-the-url link.query.url, link.query
+    write-json-response res, data, link.query
+
+  else if link.pathname == \/aec
+    data <- get-aec-radiations
+    write-json-response res, data, link.query
+
   else
     res.writeHead(404)
     res.end!
-.listen(port)
-
-process.stdout.write("Server started at http://localhost: #port\n")
+.listen process.env.PORT || 19000
