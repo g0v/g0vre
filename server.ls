@@ -1,4 +1,4 @@
-require! <[ ./extractor http request url cheerio ]>
+require! <[ ./extractor http request url cheerio iso8601 ]>
 
 Iconv = require \iconv .Iconv
 
@@ -11,12 +11,14 @@ read-the-url = (url, opts, respond) ->
     respond it
 
 get-aec-radiations = (respond) ->
+  trim = -> it.replace /(^\s+|\s+$)/g, ""  
   _err, _res, page <- request { url: 'http://www.trmc.aec.gov.tw/utf8/showmap/taiwan_out.php', encoding: null }
   radiations = []
   $ = cheerio.load (new Iconv 'Big5', 'UTF-8').convert(page)
   $("a").each ->
     radiations.push {
-      location: @text!.replace /\s/g, ""
+      location: trim @text!
+      time: iso8601.fromDate new Date Date.parse trim(@parent!.parent!.parent!.next!.find(\span).text!) + " GMT+0800"
       value: @parent!.parent!.next!.text!
     }
   respond radiations
