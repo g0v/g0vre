@@ -23,6 +23,7 @@ get-aec-radiations = (respond) ->
     }
   respond radiations
 
+port = process.env.PORT || 19000
 http.createServer !(req, res) ->
   link = url.parse req.url, true
   if link.pathname == \/read and link.query.url
@@ -36,4 +37,6 @@ http.createServer !(req, res) ->
   else
     res.writeHead(404)
     res.end!
-.listen process.env.PORT || 19000
+.listen port
+
+console.log('> http server has started on port #port');
