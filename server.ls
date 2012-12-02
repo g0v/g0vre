@@ -18,7 +18,7 @@ get-aec-radiations = (respond) ->
   $("a").each ->
     radiations.push {
       location: trim @text!
-      time: iso8601.fromDate new Date Date.parse trim(@parent!.parent!.parent!.next!.find(\span).text!) + " GMT+0800"
+      time: iso8601.fromDate new Date Date.parse trim(@parent!parent!parent!next!find(\span)text!) + " GMT+0800"
       value: @parent!.parent!.next!.text!
     }
   respond radiations
