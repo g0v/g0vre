@@ -1,5 +1,18 @@
 # g0vre
 
+## 原能會輻射監測
+
+將 http://www.trmc.aec.gov.tw/utf8/showmap/taiwan_out.php 的內容轉成 JSON
+
+用法：
+
+    curl http://gugod.g0vre.jit.su/aec
+
+URL 上另可加上 `?prett=1` 以產生有縮排的 JSON。
+
+
+## generic gov.tw URL extractor
+
 A generic reader/extractor for *.gov.tw URLs. Currently running at http://gugod.g0vre.jit.su
 
 Usage:
