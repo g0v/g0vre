@@ -37,4 +37,4 @@ extract = !(url, opts, cb) ->
     article.full_text   = trim article.full_text_untrimed.replace(/[ \t\n\r]+/g, " ")
   cb(article)
 
-export extract: extract
+export extract

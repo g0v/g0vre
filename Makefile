@@ -1,7 +1,7 @@
 %.js: %.ls
 	lsc -c $*
 
-all :: extractor.js server.js
+all :: extractor.js aec.js server.js
 
 deploy: all
 	jitsu deploy
