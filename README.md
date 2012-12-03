@@ -8,7 +8,7 @@
 
     curl http://gugod.g0vre.jit.su/aec
 
-URL 上另可加上 `?prett=1` 以產生有縮排的 JSON。
+URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
 
 ## generic gov.tw URL extractor
