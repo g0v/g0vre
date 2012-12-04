@@ -1,5 +1,4 @@
 require! <[ request iso8601 cheerio ]>
-Iconv = require \iconv .Iconv
 
 stations =
   * location: "後壁湖"
@@ -119,15 +118,16 @@ stations =
 
 radiations = (respond) ->
   trim = -> it.replace /(^\s+|\s+$)/g, ""
-  _err, _res, page <- request { url: 'http://www.trmc.aec.gov.tw/utf8/showmap/taiwan_out.php', encoding: null }
+  _err, _res, page <- request { url: 'http://www.trmc.aec.gov.tw', encoding: "utf-8" }
   radiations = []
-  $ = cheerio.load (new Iconv 'Big5', 'UTF-8').convert(page)
-  $("a").each ->
-    radiations.push {
-      location: trim @text!
-      time: iso8601.fromDate new Date Date.parse trim(@parent!parent!parent!next!find(\span)text!) + " GMT+0800"
-      value: @parent!.parent!.next!.text!
-    }
+  $ = cheerio.load page
+  $("table a").each ->
+    if @attr \href is /^javascript/
+      radiations.push {
+        location: trim @text!
+        time: iso8601.fromDate new Date Date.parse trim(@parent!next!text!) + " GMT+0800"
+        value: trim @parent!next!next!text!
+      }
   respond radiations
 
 export radiations, stations

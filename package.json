@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node server.js"
   },
-  "version": "0.0.7-3",
+  "version": "0.0.7-4",
   "engines": {
     "node": "0.8.x"
   },
@@ -14,7 +14,6 @@
     "cheerio": "0.10.3",
     "request": "*",
     "htmlparser2": "*",
-    "iso8601": "*",
-    "iconv": "*"
+    "iso8601": "*"
   }
 }
