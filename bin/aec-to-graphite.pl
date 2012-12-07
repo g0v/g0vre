@@ -47,25 +47,38 @@ my $location_name_to_pinyin = {
     "後壁湖" => "Houbihu",
 };
 
-my $ua = LWP::UserAgent->new;
-my $response = $ua->get("http://gugod.g0vre.jit.su/aec");
-exit -1 unless $response->is_success;
-my $datum = decode_json $response->decoded_content;
-my $ng = Net::Graphite->new();
+sub send_metrics {
+    my $metrics = shift;
+    my $ng = Net::Graphite->new();
+    for my $metric (@$metrics) {
+        my $plaintext = $ng->send(%$metric);
+        print $plaintext;
 
-for my $data (@$datum) {
-    my $metric = "aec.radiation.$location_name_to_pinyin->{ $data->{location} }";
-    my $t = DateTime::Format::ISO8601->parse_datetime( $data->{time} )->epoch;
-    my $value = $data->{value};
-
-    say "$metric $t $value";
-
-    utf8::encode($metric);
-    utf8::encode($value);
-    utf8::encode($t);
-    $ng->send(
-        path  => $metric,
-        value => $value,
-        time  => $t
-    );
+    }
 }
+
+sub retrieve_from_jitsu {
+    my $ua = LWP::UserAgent->new;
+    my $response = $ua->get("http://gugod.g0vre.jit.su/aec");
+    exit -1 unless $response->is_success;
+    my $datum = decode_json $response->decoded_content;
+    my $metrics = [];
+    for my $data (@$datum) {
+        my $metric = "aec.radiation.$location_name_to_pinyin->{ $data->{location} }";
+        my $t = DateTime::Format::ISO8601->parse_datetime( $data->{time} )->epoch;
+        my $value = $data->{value};
+
+        utf8::encode($metric);
+        utf8::encode($value);
+        utf8::encode($t);
+        push @$metrics, {
+            path  => $metric,
+            value => $value,
+            time  => $t
+        }
+    }
+
+    return $metrics;
+}
+
+send_metrics retrieve_from_jitsu;
