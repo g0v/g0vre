@@ -2,9 +2,13 @@ use v5.14;
 use strict;
 use utf8;
 use JSON;
+use Encode qw(decode);
+use IO::String;
 use Net::Graphite;
 use LWP::UserAgent;
 use DateTime::Format::ISO8601;
+use DateTime::Format::HTTP;
+use Text::CSV;
 
 my $location_name_to_pinyin = {
     "馬祖"   => "Mazu",
@@ -51,6 +55,10 @@ sub send_metrics {
     my $metrics = shift;
     my $ng = Net::Graphite->new();
     for my $metric (@$metrics) {
+        utf8::encode($metric->{path});
+        utf8::encode($metric->{value});
+        utf8::encode($metric->{time});
+
         my $plaintext = $ng->send(%$metric);
         print $plaintext;
 
@@ -68,9 +76,6 @@ sub retrieve_from_jitsu {
         my $t = DateTime::Format::ISO8601->parse_datetime( $data->{time} )->epoch;
         my $value = $data->{value};
 
-        utf8::encode($metric);
-        utf8::encode($value);
-        utf8::encode($t);
         push @$metrics, {
             path  => $metric,
             value => $value,
@@ -81,4 +86,26 @@ sub retrieve_from_jitsu {
     return $metrics;
 }
 
+sub retrieve_from_aec {
+    my $ua = LWP::UserAgent->new;
+    my $response = $ua->get("http://www.aec.gov.tw/open/gammamonitor.csv");
+    exit -1 unless $response->is_success;
+    my $csv_decoder = Text::CSV->new({ binary => 1 });
+    my $io = IO::String->new( decode "big5" => $response->content );
+    $io->getline; # strip header
+
+    my $metrics = [];
+    while (my $row = $csv_decoder->getline($io)) {
+        push @$metrics, {
+            path  => "aec.radiation.$location_name_to_pinyin->{ $row->[0] }",
+            value => $row->[2],
+            time  => DateTime::Format::HTTP->parse_datetime($row->[3], "Asia/Taipei")->epoch,
+        }
+    }
+    return $metrics;
+}
+
 send_metrics retrieve_from_jitsu;
+# say encode_json retrieve_from_jitsu;
+# say encode_json retrieve_from_aec;
+
