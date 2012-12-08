@@ -3,7 +3,7 @@ require! <[ request iso8601 cheerio async ]>
 grok = (prefix, url, respond) -->
   _err, _res, page <- request url: url
   $ = cheerio.load page
-  t = iso8601.fromDate new Date Date.parse $("div.time").text! + " +0800"
+  t = iso8601.fromDate new Date Date.parse $(".time").first!text! + " +0800"
   r = []
   $ "td.time" .each ->
     r.push {
@@ -23,7 +23,7 @@ stations-in-longmen = grok \龍門廠 \http://wapp4.taipower.com.tw/nsis/web/new
 
 stations-in-lanyu = grok \蘭嶼廠 \http://wapp4.taipower.com.tw/nsis/web/new_screen_page/005l/intime_graph_5.asp
 
-all-stations = (respond) ->
+radiations = (respond) ->
   _err, results <- async.parallel [
     stations-in-one
     stations-in-two
@@ -33,5 +33,5 @@ all-stations = (respond) ->
   ]
   respond(results)
 
-export all-stations
+export radiations
 

@@ -1,4 +1,4 @@
-require! <[ ./extractor ./aec http request url cheerio iso8601 ]>
+require! <[ ./extractor ./aec ./taipower http request url cheerio iso8601 ]>
 
 write-json-response = (res, obj, opts) ->
   res.write JSON.stringify obj, \utf8, (opts.pretty and 4 or 0)
@@ -7,9 +7,6 @@ write-json-response = (res, obj, opts) ->
 read-the-url = (url, opts, respond) ->
   extractor.extract url, opts, ->
     respond it
-
-get-aec-radiations = (respond) ->
-  aec.radiations respond
 
 port = process.env.PORT || 19000
 http.createServer !(req, res) ->
@@ -20,6 +17,10 @@ http.createServer !(req, res) ->
 
   else if link.pathname == \/aec
     data <- aec.radiations
+    write-json-response res, data, link.query
+
+  else if link.pathname == \/taipower
+    data <- taipower.radiations
     write-json-response res, data, link.query
 
   else
