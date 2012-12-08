@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node server.js"
   },
-  "version": "0.0.8",
+  "version": "0.0.9",
   "engines": {
     "node": "0.8.x"
   },
@@ -16,6 +16,6 @@
     "htmlparser2": "*",
     "iso8601": "*",
     "async": "*",
-    "perlude-ls": "*"
+    "prelude-ls": "*"
   }
 }
