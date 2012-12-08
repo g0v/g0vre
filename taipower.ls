@@ -1,4 +1,4 @@
-require! <[ request iso8601 cheerio ]>
+require! <[ request iso8601 cheerio async ]>
 
 grok = (prefix, url, respond) -->
   _err, _res, page <- request url: url
@@ -11,7 +11,7 @@ grok = (prefix, url, respond) -->
         time: t
         value: @text!
     }
-  respond(r)
+  respond(_err, r)
 
 stations-in-one = grok \核一廠 \http://wapp4.taipower.com.tw/nsis/web/new_screen_page/001s/intime_graph_1.asp
 
@@ -24,11 +24,14 @@ stations-in-longmen = grok \龍門廠 \http://wapp4.taipower.com.tw/nsis/web/new
 stations-in-lanyu = grok \蘭嶼廠 \http://wapp4.taipower.com.tw/nsis/web/new_screen_page/005l/intime_graph_5.asp
 
 all-stations = (respond) ->
-  s1 <- stations-in-one
-  s2 <- stations-in-two
-  s3 <- stations-in-three
-  s4 <- stations-in-longmen
-  s5 <- stations-in-lanyu
-  respond s1 +++ s2 +++ s3 +++ s4 +++ s5
+  _err, results <- async.parallel [
+    stations-in-one
+    stations-in-two
+    stations-in-three
+    stations-in-longmen
+    stations-in-lanyu
+  ]
+  respond(results)
 
-# all-stations -> console.log(it)
+export all-stations
+
