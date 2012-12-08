@@ -15,6 +15,7 @@
     "request": "*",
     "htmlparser2": "*",
     "iso8601": "*",
-    "async": "*"
+    "async": "*",
+    "perlude-ls": "*"
   }
 }

@@ -1,4 +1,5 @@
 require! <[ request iso8601 cheerio async ]>
+global <<< require \prelude-ls
 
 grok = (prefix, url, respond) -->
   _err, _res, page <- request url: url
@@ -31,7 +32,7 @@ radiations = (respond) ->
     stations-in-longmen
     stations-in-lanyu
   ]
-  respond(results)
+  respond( concat results )
 
 export radiations
 
