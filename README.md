@@ -2,7 +2,7 @@
 
 ## 原能會輻射監測
 
-將 http://www.trmc.aec.gov.tw/utf8/showmap/taiwan_out.php 的內容轉成 JSON
+將 http://www.trmc.aec.gov.tw/ 的內容轉成 JSON
 
 用法：
 
@@ -10,6 +10,19 @@
 
 URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
+## 各核電廠輻射監測
+
+資料來源：台電網站
+
+- http://wapp4.taipower.com.tw/nsis/web/new_screen_page/001s/intime_graph_1.asp
+- http://wapp4.taipower.com.tw/nsis/web/new_screen_page/002s/intime_graph_2.asp
+- http://wapp4.taipower.com.tw/nsis/web/new_screen_page/003s/intime_graph_3.asp
+- http://wapp4.taipower.com.tw/nsis/web/new_screen_page/004s/intime_graph_4.asp
+- http://wapp4.taipower.com.tw/nsis/web/new_screen_page/005l/intime_graph_5.asp
+
+用法
+
+    curl http://gugod.g0vre.jit.su/taipower
 
 ## generic gov.tw URL extractor
 
