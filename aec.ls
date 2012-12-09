@@ -119,6 +119,7 @@ stations =
 radiations = (respond) ->
   trim = -> it.replace /(^\s+|\s+$)/g, ""
   _err, _res, page <- request { url: 'http://www.trmc.aec.gov.tw', encoding: "utf-8" }
+  console.log("aec error: " + JSON.stringify(_err)) if _err
   radiations = []
   $ = cheerio.load page
   $("table a").each ->

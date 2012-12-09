@@ -3,6 +3,7 @@ global <<< require \prelude-ls
 
 grok = (prefix, url, respond) -->
   _err, _res, page <- request url: url
+  console.log("taipower error: " + JSON.stringify(_err)) if _err
   $ = cheerio.load page
   t = iso8601.fromDate new Date Date.parse $(".time").first!text! + " +0800"
   r = []
