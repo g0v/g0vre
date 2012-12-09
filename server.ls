@@ -1,31 +1,40 @@
-require! <[ ./extractor ./aec ./taipower http request url cheerio iso8601 ]>
+require! <[ ./extractor ./aec ./taipower ./cwbtw http request url cheerio iso8601 ]>
 
 write-json-response = (res, obj, opts) ->
   res.write JSON.stringify obj, \utf8, (opts.pretty and 4 or 0)
   res.end!                   
 
-read-the-url = (url, opts, respond) ->
-  extractor.extract url, opts, ->
-    respond it
+read-the-url = (url, opts, respond) -->
+  extractor.extract url, opts, -> respond it
+
+get-cwb-rainfall = (respond) ->
+  data <- cwbtw.fetch_rain
+  time, res <- cwbtw.parse_rain data
+  respond res.map -> { time: time, station: it[0], value: parseFloat it[1] }
 
 port = process.env.PORT || 19000
 http.createServer !(req, res) ->
   link = url.parse req.url, true
+  f = null
   if link.pathname == \/read and link.query.url
-    data <- read-the-url link.query.url, link.query
-    write-json-response res, data, link.query
+    f = read-the-url link.query.url, link.query
 
   else if link.pathname == \/aec
-    data <- aec.radiations
-    write-json-response res, data, link.query
+    f = aec.radiations
 
   else if link.pathname == \/taipower
-    data <- taipower.radiations
+    f = taipower.radiations
+
+  else if link.pathname == \/cwb.rainfall
+    f = get-cwb-rainfall
+
+  if f == null
+    res.writeHead(404)
+    res.end!    
+  else
+    data <- f
     write-json-response res, data, link.query
 
-  else
-    res.writeHead(404)
-    res.end!
 .listen port
 
 console.log "> http server has started on port #port";
