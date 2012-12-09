@@ -1,8 +1,17 @@
 # g0vre
 
-## 原能會輻射監測
+API 網址
 
-將 http://www.trmc.aec.gov.tw/ 的內容轉成 JSON
+* http://g0vre.herokuapp.com
+* http://gugod.g0vre.jit.su
+
+兩者網址可互換使用
+
+## 原能會輻射監測 /aec
+
+資料來源：原能會網站
+
+- http://www.trmc.aec.gov.tw/
 
 用法：
 
@@ -10,7 +19,7 @@
 
 URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
-## 各核電廠輻射監測
+## 各核電廠輻射監測 /taipower
 
 資料來源：台電網站
 
@@ -24,7 +33,17 @@ URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
     curl http://gugod.g0vre.jit.su/taipower
 
-## generic gov.tw URL extractor
+## 十分鐘雨量 /cwb.rainfall
+
+資料來源：氣象局網站
+
+- http://www.cwb.gov.tw/V7/observe/rainfall/A136.htm
+
+用法 
+
+    curl http://g0vre.herokuapp.com/cwb.rainfall
+
+## generic gov.tw URL extractor. /read
 
 A generic reader/extractor for *.gov.tw URLs. Currently running at http://gugod.g0vre.jit.su
 
@@ -61,5 +80,3 @@ The `full_*` part are un-extracted results from the whole page html.
 
 `full_text` is trimed by default since generally web pagse contains a lot of whitespaces.
 `full_text_untrimed` keeps those whitespace just in case.
-
-
