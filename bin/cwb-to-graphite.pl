@@ -25,7 +25,7 @@ sub retrieve_from_jitsu {
     my $datum = decode_json $response->decoded_content;
     my $metrics = [];
     for my $data (@$datum) {
-        my $metric = "cwb.rainfall.10." . $data->{station};
+        my $metric = "cwb.rainfall10." . $data->{station};
         my $t = DateTime::Format::ISO8601->parse_datetime( $data->{time} )->epoch;
         my $value = $data->{value};
         if (defined $value) {
