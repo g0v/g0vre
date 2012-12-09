@@ -9,7 +9,8 @@ read-the-url = (url, opts, respond) -->
 
 get-cwb-rainfall = (respond) ->
   data <- cwbtw.fetch_rain
-  time, res <- cwbtw.parse_rain data
+  raw_time, res <- cwbtw.parse_rain data
+  time = iso8601.fromDate new Date Date.parse(raw_time + " GMT+0800")
   respond res.map -> { time: time, station: it[0], value: parseFloat it[1] }
 
 port = process.env.PORT || 19000
