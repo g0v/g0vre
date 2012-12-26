@@ -20,6 +20,7 @@
     "async": "*",
     "prelude-ls": "*",
     "optimist": "*",
-    "xml2js": "0.1.x"
+    "xml2js": "0.1.x",
+    "xml-writer": "1.2.3"
   }
 }
