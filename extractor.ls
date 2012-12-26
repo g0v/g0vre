@@ -1,4 +1,4 @@
-require! <[ request readabilitySAX cheerio ]>
+require! <[ request readabilitySAX cheerio xml-writer ]>
 Url = require \url
 Parser = require 'htmlparser2/lib/Parser.js'
 
@@ -37,4 +37,20 @@ extract = !(url, opts, cb) ->
     article.full_text   = trim article.full_text_untrimed.replace(/[ \t\n\r]+/g, " ")
   cb(article)
 
-export extract
+links-as-rss = !(url, cb) ->
+  article <- extract url, full: true
+  xw = new xmlWriter!
+  xw.start-document!start-element(\rss).write-attribute(\version, \2.0)
+  xw.start-element(\channel)
+    .write-element(\title, article.title)
+    .write-element(\link, url)
+    .write-element(\lastBuildDate, (new Date!).to-string! )
+  article.full_links.map ->
+    xw.start-element(\item)
+    xw.start-element(\link).text(it.url).end-element!
+    xw.start-element(\title).text(it.text).end-element!
+    xw.end-element!
+  xw.end-document!
+  cb xw.to-string!
+
+export extract, links-as-rss
