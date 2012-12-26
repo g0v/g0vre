@@ -44,11 +44,24 @@ links-as-rss = !(url, cb) ->
   xw.start-element(\channel)
     .write-element(\title, article.title)
     .write-element(\link, url)
-  article.full_links.map ->
-    xw.start-element(\item)
-      .write-element \link, it.url
-      .write-element \title, trim it.text.replace(/[ \t\n\r]+/g, " ")
-      .end-element!
+
+  dupe = {}
+  titles = {}
+
+  for link in article.full_links
+    dupe[link.url] ||= 0
+    dupe[link.url] += 1
+    t = trim(link.text.replace(/[ \t\n\r]+/g, " "))
+    unless t.match(/^\s*$/)
+      titles[link.url] = t
+
+  for u,t of titles
+    if dupe[u] == 1
+      xw.start-element(\item)
+        .write-element \link u
+        .write-element \title t
+        .end-element!
+
   xw.end-document!
   cb xw.to-string!
 
