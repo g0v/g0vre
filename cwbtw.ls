@@ -30,7 +30,7 @@ fetch_forecast_by_town = (id, cb) -->
         headers: {\Referer: \http://www.cwb.gov.tw/township/enhtml/index.htm}
     }, cb
 
-get_frames = (Value, layout, timeslice) ->
+get_frames = (Value, layout, timeslice) -->
     i = 0
     [{ts: timeslice[layout][i++]} <<< frame \
         for { '@':{layout:fl} }:frame in Value when fl is layout]
@@ -39,7 +39,7 @@ get_frames = (Value, layout, timeslice) ->
         it.WindDir?.=[\@].abbre
         it
 
-parse_area = (Value, timeslice) ->
+parse_area = (Value, timeslice) -->
     [curr, ...frames12] = get_frames Value, \12, timeslice
     for frame in get_frames Value, \3, timeslice
         if frame.ts.getTime() == frames12[0].ts.getTime()
