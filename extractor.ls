@@ -44,7 +44,6 @@ links-as-rss = !(url, cb) ->
   xw.start-element(\channel)
     .write-element(\title, article.title)
     .write-element(\link, url)
-    .write-element(\lastBuildDate, (new Date!).to-string! )
   article.full_links.map ->
     xw.start-element(\item)
       .write-element \link, it.url
