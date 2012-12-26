@@ -3,9 +3,6 @@
 API 網址
 
 * http://g0vre.herokuapp.com
-* http://gugod.g0vre.jit.su
-
-兩者網址可互換使用
 
 ## 原能會輻射監測 /aec
 
@@ -15,7 +12,7 @@ API 網址
 
 用法：
 
-    curl http://gugod.g0vre.jit.su/aec
+    curl http://g0vre.herokuapp.com/aec
 
 URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
@@ -31,7 +28,7 @@ URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
 用法
 
-    curl http://gugod.g0vre.jit.su/taipower
+    curl http://g0vre.herokuapp.com/taipower
 
 ## 十分鐘雨量 /cwb.rainfall
 
@@ -45,11 +42,11 @@ URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
 ## generic gov.tw URL extractor. /read
 
-A generic reader/extractor for *.gov.tw URLs. Currently running at http://gugod.g0vre.jit.su
+A generic reader/extractor for *.gov.tw URLs. Currently running at http://g0vre.herokuapp.com
 
 Usage:
 
-    curl 'http://gugod.g0vre.jit.su/read?url=http%3A%2F%2Fwww.gov.tw%2Fnewscenter%2Fpages%2Fdetail.aspx%3Fpage%3D52e41ec5-283a-4095-91ad-f3ad3cfd4be9.aspx'
+    curl 'http://g0vre.herokuapp.com/read?url=http%3A%2F%2Fwww.gov.tw%2Fnewscenter%2Fpages%2Fdetail.aspx%3Fpage%3D52e41ec5-283a-4095-91ad-f3ad3cfd4be9.aspx'
 
 Params:
 
@@ -80,3 +77,16 @@ The `full_*` part are un-extracted results from the whole page html.
 
 `full_text` is trimed by default since generally web pagse contains a lot of whitespaces.
 `full_text_untrimed` keeps those whitespace just in case.
+
+## Generic RSS generator: /links2rss
+
+Turns any webpage into a RSS feed of the links found it the page. Useful when a
+website is not providing feeds.
+
+Required parameters
+
+- url
+
+Example:
+
+    curl http://g0vre.herokuapp.com/links2rss?url=http://www.gov.tw
