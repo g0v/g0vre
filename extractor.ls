@@ -47,9 +47,9 @@ links-as-rss = !(url, cb) ->
     .write-element(\lastBuildDate, (new Date!).to-string! )
   article.full_links.map ->
     xw.start-element(\item)
-    xw.start-element(\link).text(it.url).end-element!
-    xw.start-element(\title).text(it.text).end-element!
-    xw.end-element!
+      .write-element \link, it.url
+      .write-element \title, trim it.text.replace(/[ \t\n\r]+/g, " ")
+      .end-element!
   xw.end-document!
   cb xw.to-string!
 
