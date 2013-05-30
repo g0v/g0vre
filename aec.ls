@@ -118,15 +118,15 @@ stations =
 
 radiations = (respond) ->
   trim = -> it.replace /(^\s+|\s+$)/g, ""
-  _err, _res, page <- request { url: 'http://www.trmc.aec.gov.tw', encoding: "utf-8" }
+  _err, _res, page <- request { url: 'http://www.trmc.aec.gov.tw/utf8/big5/main.php', encoding: "utf-8" }
   console.log("aec error: " + JSON.stringify(_err)) if _err
   radiations = []
   $ = cheerio.load page
-  $("table a").each ->
+  $("table a.a").each ->
     if @attr \href is /^javascript/
       radiations.push {
         location: trim @text!
-        time: iso8601.fromDate new Date Date.parse trim(@parent!next!text!) + " GMT+0800"
+        time: new Date()
         value: trim @parent!next!next!text!
       }
   respond radiations
