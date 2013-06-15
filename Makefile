@@ -4,4 +4,5 @@
 all :: server.js extractor.js aec.js taipower.js cwbtw.js
 
 deploy: all
-	jitsu deploy
+	git push heroku master
+
