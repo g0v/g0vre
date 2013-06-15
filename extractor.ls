@@ -54,9 +54,11 @@ links-as-rss = !(url, cb) ->
     t = trim(link.text.replace(/[ \t\n\r]+/g, " "))
     unless t.match(/^\s*$/)
       titles[link.url] = t
+      dupe[t] ||= 0
+      dupe[t] += 1
 
   for u,t of titles
-    if dupe[u] == 1
+    if dupe[u] == 1 && dupe[t] == 1
       xw.start-element(\item)
         .write-element \link u
         .write-element \title t
