@@ -55,8 +55,8 @@ parse_forecast_72hr = (data, cb) -->
     [ { '@':slice12, FcstTime:tmpslice[\12] },
       { '@':slice3,  FcstTime:tmpslice[\3 ] } ] = result.Metadata.Time
 
+    expand_time = -> new Date(if typeof it is \object => it[\#] else it)
     timeslice = {[key, ts.map expand_time] for key, ts of tmpslice}
-        where expand_time = -> new Date(if typeof it is \object => it[\#] else it)
 
     cb new Date(result.IssueTime),
     {[areaid, parse_area Value, timeslice] for {'@':{AreaID:areaid}, Value} in result.County.Area}
