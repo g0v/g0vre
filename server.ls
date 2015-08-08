@@ -16,6 +16,12 @@ get-cwb-rainfall10 = (respond) ->
   time = iso8601.fromDate new Date Date.parse(raw_time + " GMT+0800")
   respond res.map -> { time: time, station: it[0], value: parseFloat(it[1][1]) }
 
+get-cwb-rains = (respond) ->
+  data <- cwbtw.fetch_rain
+  raw_time, res <- cwbtw.parse_rain data
+  time = iso8601.fromDate new Date Date.parse(raw_time + " GMT+0800")
+  respond res.map -> { time: time, station: it[0], values: it[1].map -> parseFloat(it) }
+
 port = process.env.PORT || 19000
 http.createServer !(req, res) ->
   link = url.parse req.url, true
@@ -33,6 +39,9 @@ http.createServer !(req, res) ->
 
   else if link.pathname == \/cwb.rainfall
     f = get-cwb-rainfall10
+
+  else if link.pathname == \/cwb.rains
+    f = get-cwb-rains
 
   else if link.pathname == \/links2rss and link.query.url
     processed = true
