@@ -2,7 +2,7 @@
 
 API 網址
 
-* http://g0vre.herokuapp.com
+* https://g0vre.herokuapp.com
 
 ## 原能會輻射監測 /aec
 
@@ -12,7 +12,7 @@ API 網址
 
 用法：
 
-    curl http://g0vre.herokuapp.com/aec
+    curl https://g0vre.herokuapp.com/aec
 
 URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
@@ -28,7 +28,7 @@ URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
 用法
 
-    curl http://g0vre.herokuapp.com/taipower
+    curl https://g0vre.herokuapp.com/taipower
 
 ## 雨量 /cwb.rains
 
@@ -38,7 +38,7 @@ URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
 用法 
 
-    curl http://g0vre.herokuapp.com/cwb.rains
+    curl https://g0vre.herokuapp.com/cwb.rains
 
 輸出範例：
 
@@ -71,16 +71,16 @@ URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
 用法
 
-    curl http://g0vre.herokuapp.com/cwb.rainfall
+    curl https://g0vre.herokuapp.com/cwb.rainfall
 
 
 ## generic gov.tw URL extractor. /read
 
-A generic reader/extractor for *.gov.tw URLs. Currently running at http://g0vre.herokuapp.com
+A generic reader/extractor for *.gov.tw URLs. Currently running at https://g0vre.herokuapp.com
 
 Usage:
 
-    curl 'http://g0vre.herokuapp.com/read?url=http%3A%2F%2Fwww.gov.tw%2Fnewscenter%2Fpages%2Fdetail.aspx%3Fpage%3D52e41ec5-283a-4095-91ad-f3ad3cfd4be9.aspx'
+    curl 'https://g0vre.herokuapp.com/read?url=http%3A%2F%2Fwww.gov.tw%2Fnewscenter%2Fpages%2Fdetail.aspx%3Fpage%3D52e41ec5-283a-4095-91ad-f3ad3cfd4be9.aspx'
 
 Params:
 
@@ -123,4 +123,4 @@ Required parameters
 
 Example:
 
-    curl http://g0vre.herokuapp.com/links2rss?url=http://www.gov.tw
+    curl https://g0vre.herokuapp.com/links2rss?url=http://www.gov.tw
