@@ -10,11 +10,11 @@ read-the-url = (url, opts, respond) -->
 links-as-rss = (url, respond) -->
   extractor.links-as-rss url, -> respond it
 
-get-cwb-rainfall = (respond) ->
+get-cwb-rainfall10 = (respond) ->
   data <- cwbtw.fetch_rain
   raw_time, res <- cwbtw.parse_rain data
   time = iso8601.fromDate new Date Date.parse(raw_time + " GMT+0800")
-  respond res.map -> { time: time, station: it[0], value: parseFloat(if it[1] == \- then 0 else it[1]) }
+  respond res.map -> { time: time, station: it[0], value: parseFloat(it[1][1]) }
 
 port = process.env.PORT || 19000
 http.createServer !(req, res) ->
@@ -32,7 +32,7 @@ http.createServer !(req, res) ->
     f = taipower.radiations
 
   else if link.pathname == \/cwb.rainfall
-    f = get-cwb-rainfall
+    f = get-cwb-rainfall10
 
   else if link.pathname == \/links2rss and link.query.url
     processed = true

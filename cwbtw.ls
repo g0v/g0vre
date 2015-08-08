@@ -15,10 +15,11 @@ parse_rain = (data, cb) -->
     $ = require \cheerio .load(data)
     [...,time] = $('table.description td').last!html!split(/ : /)
     $('table#tableData tbody tr').each ->
-        try [_area, station, rain] = @find \td .map -> @text!
+        cells = @find \td .map -> @text!
+        try [_area, station, ...rains] = cells
         [,station_name,station_id] = station.match /(\S+)\s*\((\S+)\)/
         [,town,area] = _area.match /(...)(.*)/
-        res.push [station_id, rain, town, area, station_name]
+        res.push [station_id, rains, town, area, station_name]
     cb time, res
 
 ### 72hr forecast
