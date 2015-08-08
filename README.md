@@ -30,7 +30,7 @@ URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
     curl http://g0vre.herokuapp.com/taipower
 
-## 十分鐘雨量 /cwb.rainfall
+## 雨量 /cwb.rains
 
 資料來源：氣象局網站
 
@@ -38,7 +38,41 @@ URL 上另可加上 `?pretty=1` 以產生有縮排的 JSON。
 
 用法 
 
+    curl http://g0vre.herokuapp.com/cwb.rains
+
+輸出範例：
+
+    [
+        {
+           "values" : [
+              null,
+              1,
+              1,
+              1,
+              76,
+              null,
+              364.5,
+              388.5,
+              389.5
+           ],
+           "time" : "2015-08-08T12:10:00Z",
+           "station" : "A1AC8"
+        },
+        ...
+    ]
+
+`values` 所對應之值分別為雨量表示各欄的數值，所對應之時間區間為：10分鐘、1小時、3小時、6小時、12小時、24小時、本日、前一日、前二日。
+
+## 十分鐘雨量 /cwb.rainfall
+
+資料來源：氣象局網站
+
+- http://www.cwb.gov.tw/V7/observe/rainfall/A136.htm
+
+用法
+
     curl http://g0vre.herokuapp.com/cwb.rainfall
+
 
 ## generic gov.tw URL extractor. /read
 
