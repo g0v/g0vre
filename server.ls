@@ -57,6 +57,6 @@ http.createServer !(req, res) ->
     data <- f
     write-json-response res, data, link.query
 
-.listen port
+.listen port, \127.0.0.1
 
 console.log "> http server has started on port #port";
