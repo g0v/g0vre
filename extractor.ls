@@ -57,19 +57,28 @@ links-as-rss = !(url, cb) ->
       dupe[t] ||= 0
       dupe[t] += 1
 
+  c = 0
   p = 0
   for u,t of titles
     if dupe[u] == 1 && dupe[t] == 1
+      c++
       p++
-      a2 <- extract u, {}
-      p--
-      xw.start-element(\item)
-        .write-element \link u
-        .write-element \title t
-        .write-element \description a2.text
-        .end-element!
-      if p == 0
-        xw.end-document!
-        cb xw.to-string!
+      if c < 4
+        a2 <- extract u, {}
+        p--
+        xw.start-element(\item)
+          .write-element \link u
+          .write-element \title t
+          .write-element \description a2.text
+          .end-element!
+        if p == 0
+          xw.end-document!
+          cb xw.to-string!
+      else
+        xw.start-element(\item)
+          .write-element \link u
+          .write-element \title t
+          .end-element!
+        p--
 
 export extract, links-as-rss
