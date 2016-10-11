@@ -1,0 +1,39 @@
+{
+  "repo": "g0v/g0vre",
+  "author": "g0v",
+  "status": "alpha",
+  "name": "g0vre",
+  "description": "Generic reader/extractor for *.gov.tw websites.",
+  "description_zh": "*.gov.tw 網站泛用型解讀器",
+  "homepage": "https://github.com/g0v/g0vre",
+  "document": "https://github.com/g0v/g0vre/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g0v/g0vre"
+  },
+  "licenses": [
+    {
+      "type": "CC0"
+    }
+  ],
+  "keywords": [
+    "livescript"
+  ],
+  "audience": [
+    "contributor"
+  ],
+  "products": [
+    "web api"
+  ],
+  "contributors": [
+    "au",
+    "clkao",
+    "EragonJ",
+    "gugod"
+  ],
+  "needs": [
+    "developer"
+  ],
+  "name_zh": "g0vre",
+  "thumbnail": ""
+}
