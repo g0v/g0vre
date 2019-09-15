@@ -96,7 +96,7 @@
         return writeJsonResponse(res, data, link.query);
       });
     }
-  }).listen(port, '127.0.0.1');
+  }).listen(port);
   console.log("> http server has started on port " + port);
   function curry$(f, bound){
     var context,
