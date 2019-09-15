@@ -1,4 +1,5 @@
 require! <[ request readabilitySAX cheerio xml-writer htmlparser2 ]>
+prelude = require 'prelude-ls'
 Url = require \url
 
 trim = -> it.replace(/&nbsp;/g," ").replace(/^\s+/, "").replace(/\s+$/,"")
@@ -20,7 +21,7 @@ extract = !(url, opts, cb) ->
   article.text = trim reader.getText!
   delete article<[ score textLength nextPage ]>
 
-  take_links  = ($) -> $("a[href]") .map -> { url: Url.resolve(url, @attr \href), text: @text! }
+  take_links  = ($) -> $("a[href]").get() |> map(-> { "url": Url.resolve(url, $(it).attr(\href)), text: $(it).text! }) |> filter( -> it.url.match(/http/) )
   take_images = ($) -> $("img[src]").map -> { url: Url.resolve(url, @attr \src),  alt: (@attr \alt) }
 
   $ = cheerio.load article.html

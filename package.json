@@ -12,13 +12,13 @@
   "analyze": false,
   "dependencies": {
     "livescript": "1.4.x",
+    "prelude-ls": "*",
     "readabilitySAX": "1.5.3",
-    "cheerio": "0.10.3",
+    "cheerio": "0.22.x",
     "request": "*",
     "htmlparser2": "*",
     "iso8601": "*",
     "async": "*",
-    "prelude-ls": "*",
     "optimist": "*",
     "xml2js": "0.1.x",
     "xml-writer": "1.2.3"
