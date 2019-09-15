@@ -1,6 +1,5 @@
-require! <[ request readabilitySAX cheerio xml-writer ]>
+require! <[ request readabilitySAX cheerio xml-writer htmlparser2 ]>
 Url = require \url
-Parser = require 'htmlparser2/lib/Parser.js'
 
 trim = -> it.replace(/&nbsp;/g," ").replace(/^\s+/, "").replace(/\s+$/,"")
 
@@ -8,7 +7,7 @@ extract = !(url, opts, cb) ->
   _err, _res, page <- request url
   article = null
   reader = new readabilitySAX.Readability pageURL: url, resolvePaths: true
-  parser = new Parser reader, { lowerCaseTags: true }
+  parser = new htmlparser2.Parser reader, { lowerCaseTags: true }
   skipLevel = 2
 
   do
