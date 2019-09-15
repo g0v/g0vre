@@ -22,17 +22,14 @@ extract = !(url, opts, cb) ->
   delete article<[ score textLength nextPage ]>
 
   take_links  = ($) -> $("a[href]").get() |> map(-> { "url": Url.resolve(url, $(it).attr(\href)), text: $(it).text! }) |> filter( -> it.url.match(/http/) )
-  take_images = ($) -> $("img[src]").map -> { url: Url.resolve(url, @attr \src),  alt: (@attr \alt) }
 
   $ = cheerio.load article.html
   article.links = take_links $
-  article.images = take_images $
 
   if opts.full
     $ = cheerio.load article.full_html  = page.replace /^\s*/, ""
     $("script,style").remove!
     article.full_links  = take_links $
-    article.full_images = take_images $
     article.full_text_untrimed = $("html").text!
     article.full_text   = trim article.full_text_untrimed.replace(/[ \t\n\r]+/g, " ")
   cb(article)

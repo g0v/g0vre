@@ -13,7 +13,7 @@
   };
   extract = function(url, opts, cb){
     request(url, function(_err, _res, page){
-      var article, reader, parser, skipLevel, take_links, take_images, $;
+      var article, reader, parser, skipLevel, take_links, $;
       article = null;
       reader = new readabilitySAX.Readability({
         pageURL: url,
@@ -45,22 +45,12 @@
         })(
         $("a[href]").get()));
       };
-      take_images = function($){
-        return $("img[src]").map(function(){
-          return {
-            url: Url.resolve(url, this.attr('src')),
-            alt: this.attr('alt')
-          };
-        });
-      };
       $ = cheerio.load(article.html);
       article.links = take_links($);
-      article.images = take_images($);
       if (opts.full) {
         $ = cheerio.load(article.full_html = page.replace(/^\s*/, ""));
         $("script,style").remove();
         article.full_links = take_links($);
-        article.full_images = take_images($);
         article.full_text_untrimed = $("html").text();
         article.full_text = trim(article.full_text_untrimed.replace(/[ \t\n\r]+/g, " "));
       }
