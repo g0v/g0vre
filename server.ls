@@ -22,6 +22,9 @@ get-cwb-rains = (respond) ->
   time = iso8601.fromDate new Date Date.parse(raw_time + " GMT+0800")
   respond res.map -> { time: time, station: it[0], values: it[1].map -> parseFloat(it) }
 
+pong = (respond) ->
+  respond { "pong": 1 }
+
 port = process.env.PORT || 19000
 http.createServer !(req, res) ->
   link = url.parse req.url, true
@@ -48,6 +51,9 @@ http.createServer !(req, res) ->
     links-as-rss link.query.url, ->
       res.write it
       res.end!
+
+  else if link.pathname == \/ping
+    f = pong
 
   if f == null
     if !processed
