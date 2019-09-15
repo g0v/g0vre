@@ -6,8 +6,8 @@
   },
   "version": "0.1.1-1",
   "engines": {
-    "node": "0.12.x",
-    "npm": "2.13.x"
+    "node": "12.7.x",
+    "npm": "6.10.x"
   },
   "analyze": false,
   "dependencies": {
