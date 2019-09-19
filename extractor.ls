@@ -21,7 +21,10 @@ extract = !(url, opts, cb) ->
   article.text = trim reader.getText!
   delete article<[ score textLength nextPage ]>
 
-  take_links  = ($) -> $("a[href]").get() |> map(-> { "url": Url.resolve(url, $(it).attr(\href)), text: $(it).text! }) |> filter( -> it.url.match(/http/) )
+  take_links  = ($) -> $("a[href]").get() |> map(-> {
+    "url": Url.resolve(url, $(it).attr(\href)),
+    "text": trim( ($(it).text! || "").replace(/[ \t\n\r]+/g, " ") )
+  }) |> filter( -> it.url.match(/http/) && it.text.length > 4 ) |> unique-by (.url)
 
   $ = cheerio.load article.html
   article.links = take_links $
@@ -44,7 +47,7 @@ links-as-rss = !(url, cb) ->
   article.full_links.map ->
     xw.start-element(\item)
       .write-element \link, it.url
-      .write-element \title, trim it.text.replace(/[ \t\n\r]+/g, " ")
+      .write-element \title, it.text
       .end-element!
   xw.end-document!
   cb xw.to-string!

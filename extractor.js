@@ -34,16 +34,19 @@
       article.text = trim(reader.getText());
       delete article['score'], delete article['textLength'], delete article['nextPage'];
       take_links = function($){
-        return filter(function(it){
-          return it.url.match(/http/);
+        return uniqueBy(function(it){
+          return it.url;
+        })(
+        filter(function(it){
+          return it.url.match(/http/) && it.text.length > 4;
         })(
         map(function(it){
           return {
             "url": Url.resolve(url, $(it).attr('href')),
-            text: $(it).text()
+            "text": trim(($(it).text() || "").replace(/[ \t\n\r]+/g, " "))
           };
         })(
-        $("a[href]").get()));
+        $("a[href]").get())));
       };
       $ = cheerio.load(article.html);
       article.links = take_links($);
@@ -66,7 +69,7 @@
       xw.startDocument().startElement('rss').writeAttribute('version', '2.0');
       xw.startElement('channel').writeElement('title', article.title).writeElement('link', url);
       article.full_links.map(function(it){
-        return xw.startElement('item').writeElement('link', it.url).writeElement('title', trim(it.text.replace(/[ \t\n\r]+/g, " "))).endElement();
+        return xw.startElement('item').writeElement('link', it.url).writeElement('title', it.text).endElement();
       });
       xw.endDocument();
       return cb(xw.toString());
